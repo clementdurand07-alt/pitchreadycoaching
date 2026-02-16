@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pitch Ready — Clément Durand</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080807;
+    --bg2: #0f0f0d;
+    --bg3: #161614;
+    --gold: #c9a55a;
+    --gold-dim: rgba(201,165,90,0.15);
+    --gold-border: rgba(201,165,90,0.25);
+    --white: #f2ede4;
+    --white-dim: rgba(242,237,228,0.55);
+    --white-faint: rgba(242,237,228,0.12);
+    --red: #c0392b;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* noise */
+  body::after {
+    content:'';
+    position:fixed;
+    inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events:none;
+    z-index:999;
+  }
+
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 80px 32px 120px;
+  }
+
+  /* ── FADE IN ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(24px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  .fade { opacity:0; animation: fadeUp 0.7s ease forwards; }
+  .fade:nth-child(1)  { animation-delay: 0.1s; }
+  .fade:nth-child(2)  { animation-delay: 0.25s; }
+  .fade:nth-child(3)  { animation-delay: 0.4s; }
+  .fade:nth-child(4)  { animation-delay: 0.55s; }
+  .fade:nth-child(5)  { animation-delay: 0.7s; }
+  .fade:nth-child(6)  { animation-delay: 0.85s; }
+  .fade:nth-child(7)  { animation-delay: 1.0s; }
+  .fade:nth-child(8)  { animation-delay: 1.15s; }
+  .fade:nth-child(9)  { animation-delay: 1.3s; }
+
+  /* ── EYEBROW ── */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 28px;
+  }
+
+  .eyebrow::before {
+    content:'';
+    display:block;
+    width:28px;
+    height:1px;
+    background: var(--gold);
+  }
+
+  /* ── HERO TITLE ── */
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 8vw, 78px);
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -1px;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--white-dim);
+    margin-bottom: 48px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, var(--gold-border), transparent);
+    margin: 40px 0;
+  }
+
+  /* ── PROBLEM BLOCK ── */
+  .problem {
+    padding: 32px;
+    border: 1px solid var(--white-faint);
+    border-left: 3px solid var(--gold);
+    background: var(--bg2);
+    margin-bottom: 40px;
+  }
+
+  .problem p {
+    font-family: 'Inter', sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.7;
+    color: var(--white);
+  }
+
+  .problem p + p { margin-top: 14px; }
+
+  .problem strong {
+    font-weight: 500;
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  /* ── SECTION TITLE ── */
+  .section-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+
+  /* ── SESSIONS ── */
+  .sessions {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 40px;
+  }
+
+  .session {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 20px;
+    align-items: start;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--white-faint);
+  }
+
+  .session:last-child { border-bottom: none; }
+
+  .session-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 1px;
+    padding-top: 2px;
+  }
+
+  .session-content {}
+
+  .session-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--white);
+    letter-spacing: 0.3px;
+    margin-bottom: 5px;
+  }
+
+  .session-desc {
+    font-size: 13px;
+    color: var(--white-dim);
+    line-height: 1.6;
+  }
+
+  /* ── BONUS STACK ── */
+  .bonus-stack {
+    background: var(--bg2);
+    border: 1px solid var(--gold-border);
+    padding: 32px;
+    margin-bottom: 8px;
+  }
+
+  .bonus-stack-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--white-dim);
+    margin-bottom: 24px;
+    letter-spacing: 0.2px;
+  }
+
+  .bonus-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--white-faint);
+    gap: 16px;
+  }
+
+  .bonus-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .bonus-name {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--white);
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .bonus-name span {
+    display: block;
+    font-size: 11px;
+    color: var(--white-dim);
+    margin-top: 2px;
+  }
+
+  .bonus-price {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--white-dim);
+    text-decoration: line-through;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ── TOTAL ROW ── */
+  .total-row {
+    background: var(--bg3);
+    border: 1px solid var(--gold-border);
+    border-top: none;
+    padding: 20px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+  }
+
+  .total-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--white-dim);
+  }
+
+  .total-values {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .total-original {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: var(--white-dim);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  .total-price {
+    font-family: 'Syne', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: -0.5px;
+  }
+
+  /* ── GUARANTEE ── */
+  .guarantee {
+    background: var(--bg2);
+    border: 1px solid var(--white-faint);
+    padding: 28px 32px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 40px;
+  }
+
+  .guarantee-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: 2px;
+  }
+
+  .guarantee-text {}
+
+  .guarantee-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .guarantee-body {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.7;
+    color: var(--white);
+  }
+
+  /* ── URGENCY ── */
+  .urgency {
+    background: rgba(192, 57, 43, 0.08);
+    border: 1px solid rgba(192, 57, 43, 0.25);
+    padding: 20px 28px;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .urgency-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #e74c3c;
+    flex-shrink: 0;
+    animation: pulse 2s ease infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .urgency-text {
+    font-size: 13px;
+    color: var(--white);
+    line-height: 1.5;
+  }
+
+  .urgency-text strong {
+    color: #e74c3c;
+    font-weight: 500;
+  }
+
+  /* ── CTA ── */
+  .cta-block {
+    text-align: center;
+    padding: 48px 32px;
+    background: var(--bg2);
+    border: 1px solid var(--gold-border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-block::before {
+    content:'';
+    position:absolute;
+    top:0; left:0; right:0;
+    height:1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+  }
+
+  .cta-pretitle {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--white-dim);
+    margin-bottom: 16px;
+  }
+
+  .cta-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--white);
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+
+  .cta-title em {
+    font-style: normal;
+    color: var(--gold);
+  }
+
+  .cta-sub {
+    font-size: 13px;
+    color: var(--white-dim);
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--bg);
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 16px 40px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+  }
+
+  .cta-btn:hover {
+    background: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(201,165,90,0.2);
+  }
+
+  .cta-note {
+    margin-top: 16px;
+    font-size: 11px;
+    color: var(--white-dim);
+    opacity: 0.6;
+  }
+
+  /* ── TRUST SECTION ── */
+  .trust-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-bottom: 2px;
+  }
+
+  .trust-stat {
+    background: var(--bg2);
+    border: 1px solid var(--white-faint);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .trust-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+
+  .trust-desc {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--white-dim);
+    line-height: 1.5;
+  }
+
+  .trust-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0;
+  }
+
+  .trust-badge {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--white-dim);
+    background: var(--bg2);
+    border: 1px solid var(--white-faint);
+    padding: 7px 14px;
+    letter-spacing: 0.3px;
+  }
+
+  .trust-note {
+    background: var(--gold-dim);
+    border-left: 3px solid var(--gold);
+    padding: 20px 24px;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--white);
+    line-height: 1.7;
+    margin-top: 8px;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 64px;
+    padding-top: 32px;
+    border-top: 1px solid var(--white-faint);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--white-dim);
+  }
+
+  .footer-tag {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--white-dim);
+    opacity: 0.4;
+  }
+
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO -->
+  <div class="fade">
+    <div class="eyebrow">Programme · 21 jours</div>
+    <h1 class="hero-title">Pitch<br><em>Ready.</em></h1>
+    <p class="hero-sub">Structuré. Percutant. Prêt à convaincre.</p>
+  </div>
+
+  <!-- PROBLEM -->
+  <div class="fade">
+    <div class="problem">
+      <p>Tu as un pitch investisseur dans quelques semaines.<br>Ton message est <strong>clair dans ta tête.</strong></p>
+      <p>Mais face à un investisseur expérimenté,<br>quelque chose se perd.</p>
+      <p><strong>C'est exactement ce que je règle.</strong></p>
+    </div>
+  </div>
+
+  <div class="divider fade"></div>
+
+  <!-- SESSIONS -->
+  <div class="fade">
+    <p class="section-label">Les 4 séances</p>
+    <div class="sessions">
+      <div class="session">
+        <span class="session-num">01 —</span>
+        <div class="session-content">
+          <p class="session-title">Diagnostic complet</p>
+          <p class="session-desc">On décortique ton message actuel. Ce qui tient. Ce qui s'effondre face à un investisseur. On repart avec une structure claire et validée.</p>
+        </div>
+      </div>
+      <div class="session">
+        <span class="session-num">02 —</span>
+        <div class="session-content">
+          <p class="session-title">Reconstruction du message</p>
+          <p class="session-desc">On reconstruit l'architecture du pitch. Accroche, narration, chiffres, conclusion. Chaque mot justifié. Chaque silence maîtrisé.</p>
+        </div>
+      </div>
+      <div class="session">
+        <span class="session-num">03 —</span>
+        <div class="session-content">
+          <p class="session-title">Corps, voix & présence</p>
+          <p class="session-desc">Posture, regard, rythme, silences. Ce que les investisseurs perçoivent avant même d'entendre ce que tu dis.</p>
+        </div>
+      </div>
+      <div class="session">
+        <span class="session-num">04 —</span>
+        <div class="session-content">
+          <p class="session-title">Simulation réelle</p>
+          <p class="session-desc">Pitch complet en conditions réelles. Questions difficiles. Objections. Pression. Débriefing immédiat et ajustements finaux.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider fade"></div>
+
+  <!-- BONUS STACK -->
+  <div class="fade">
+    <p class="section-label">Ce que tu reçois en plus</p>
+    <div class="bonus-stack">
+      <p class="bonus-stack-title">Chaque bonus résout un problème précis que tu rencontreras.</p>
+
+      <div class="bonus-item">
+        <div class="bonus-name">
+          4 séances de travail intensif
+          <span>Structure · Présence · Simulation · Débriefing</span>
+        </div>
+        <span class="bonus-price">800€</span>
+      </div>
+
+      <div class="bonus-item">
+        <div class="bonus-name">
+          Pitch Decoder
+          <span>Audit complet de ton deck — livré par écrit sous 48h</span>
+        </div>
+        <span class="bonus-price">300€</span>
+      </div>
+
+      <div class="bonus-item">
+        <div class="bonus-name">
+          Investisseur Simulator
+          <span>40 vraies questions d'investisseurs + réponses qui tuent vs qui coulent</span>
+        </div>
+        <span class="bonus-price">200€</span>
+      </div>
+
+      <div class="bonus-item">
+        <div class="bonus-name">
+          Accès WhatsApp direct — 21 jours
+          <span>Feedback vocal sous 24h sur tes vidéos de répétition</span>
+        </div>
+        <span class="bonus-price">250€</span>
+      </div>
+
+      <div class="bonus-item">
+        <div class="bonus-name">
+          Séance SOS J-48
+          <span>Session express 30 min dans les 48h avant ton pitch</span>
+        </div>
+        <span class="bonus-price">200€</span>
+      </div>
+    </div>
+
+    <div class="total-row">
+      <span class="total-label">Valeur totale</span>
+      <div class="total-values">
+        <span class="total-original">1 750€</span>
+        <span class="total-price">750€</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- GUARANTEE -->
+  <div class="fade">
+    <div class="guarantee">
+      <div class="guarantee-icon">⚑</div>
+      <div class="guarantee-text">
+        <p class="guarantee-title">Garantie résultat</p>
+        <p class="guarantee-body">"Si après nos 4 séances tu ne te sens pas significativement plus structuré et plus percutant qu'au départ, je te rembourse la dernière séance. Sans question."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- URGENCY -->
+  <div class="fade">
+    <div class="urgency">
+      <div class="urgency-dot"></div>
+      <p class="urgency-text">
+        <strong>3 places disponibles ce mois-ci.</strong> L'accès WhatsApp 21 jours ne peut fonctionner qu'avec un nombre limité de fondateurs simultanément.<br>
+        La Séance SOS J-48 est offerte pour toute inscription dans le <strong>prochain mois.</strong>
+      </p>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="fade">
+    <div class="cta-block">
+      <p class="cta-pretitle">Première étape</p>
+      <h2 class="cta-title">Diagnostic Pitch<br><em>30 minutes offertes.</em></h2>
+      <p class="cta-sub">On analyse ta situation. On identifie les vrais blocages.<br>Pas de pitch de ma part — juste 30 minutes utiles.</p>
+      <a href="https://calendly.com/clementdurand07/30min" target="_blank" rel="noopener noreferrer" class="cta-btn" onclick="window.open('https://calendly.com/clementdurand07/30min', '_blank'); return false;">Réserver mon diagnostic →</a>
+      <p class="cta-note">Gratuit · Sans engagement · Visio 30 min</p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="fade">
+    <div class="footer">
+      <span class="footer-name">Clément Durand</span>
+      <span class="footer-tag">Coach Pitch & Prise de parole · Grenoble</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
